@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anime Showcase</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <title>Ultimate Anime Showcase</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -24,6 +24,21 @@
       text-shadow: 2px 2px #000;
     }
 
+    .music-toggle {
+      text-align: center;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+    }
+
+    .music-toggle button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background: #ffcc00;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     .anime-container {
       display: flex;
       flex-wrap: wrap;
@@ -35,17 +50,31 @@
     .anime-card {
       background: #1e1e2f;
       border-radius: 12px;
-      width: 300px;
-      padding: 1.5rem;
+      width: 320px;
+      padding: 1rem;
       box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
-      transition: transform 0.3s ease;
       cursor: pointer;
       opacity: 0;
+      transform: scale(0.8);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .anime-card:hover {
+      transform: scale(1.05);
+    }
+
+    .anime-img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
 
     .anime-title {
       font-size: 1.8rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       color: #ffcc00;
       text-shadow: 1px 1px #000;
     }
@@ -55,6 +84,19 @@
       line-height: 1.5;
     }
 
+    .highlight {
+      color: #00ffff;
+      font-weight: bold;
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      pointer-events: none;
+    }
+
     footer {
       text-align: center;
       padding: 1rem;
@@ -62,71 +104,120 @@
       font-size: 0.9rem;
       color: #aaa;
     }
-
-    .highlight {
-      color: #00ffff;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
   <header>🔥 Ultimate Anime Showcase 🔥</header>
 
+  <!-- 🎵 Background Music -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f6b6b6b2e.mp3?filename=anime-lofi-ambient-11095.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="music-toggle">
+    <button onclick="toggleMusic()">🔈 Toggle Music</button>
+  </div>
+
   <div class="anime-container">
-    <div class="anime-card" onclick="showAlert('Dragon Ball Super')">
+    <!-- Dragon Ball Super -->
+    <div class="anime-card" onclick="showAlert(event, 'Dragon Ball Super')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/6b/Dragon_Ball_Super_key_visual.png" alt="Dragon Ball Super" class="anime-img">
       <div class="anime-title">Dragon Ball Super</div>
       <div class="anime-description">
-        Goku reaches new heights with <span class="highlight">Ultra Instinct</span> as gods and mortals clash in epic battles.
+        Goku ascends to god-like power levels in a multiverse showdown. <span class="highlight">Ultra Instinct</span>, divine rivalries, and the Tournament of Power push the limits of strength and spirit.
+        <br><br>
+        💥 Signature Arc: Tournament of Power<br>
+        🧘 Themes: Growth, rivalry, transcendence<br>
+        🎨 Visuals: Explosive energy and cosmic scale
       </div>
     </div>
 
-    <div class="anime-card" onclick="showAlert('Naruto Shippuden')">
+    <!-- Naruto Shippuden -->
+    <div class="anime-card" onclick="showAlert(event, 'Naruto Shippuden')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/7/79/Naruto_Shippuden_key_visual.png" alt="Naruto Shippuden" class="anime-img">
       <div class="anime-title">Naruto Shippuden</div>
       <div class="anime-description">
-        Naruto fights to protect his village and fulfill his dream of becoming Hokage.
+        Naruto’s journey from outcast to Hokage is filled with heartbreak, epic battles, and the power of friendship. The <span class="highlight">Pain arc</span> and Fourth Great Ninja War are unforgettable.
+        <br><br>
+        🌀 Signature Arc: Pain Invasion<br>
+        💔 Themes: Loneliness, legacy, redemption<br>
+        🎵 Soundtrack: Emotional and heroic
       </div>
     </div>
 
-    <div class="anime-card" onclick="showAlert('Demon Slayer')">
+    <!-- Demon Slayer -->
+    <div class="anime-card" onclick="showAlert(event, 'Demon Slayer')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/5f/Demon_Slayer_Kimetsu_no_Yaiba_volume_1_cover.jpg" alt="Demon Slayer" class="anime-img">
       <div class="anime-title">Demon Slayer</div>
       <div class="anime-description">
-        Tanjiro wields his blade against demons in a beautifully animated journey of vengeance and hope.
+        In Taisho-era Japan, <span class="highlight">Tanjiro Kamado</span> becomes a demon slayer after tragedy strikes. With breathtaking animation and haunting music, it’s a tale of grief and resilience.
+        <br><br>
+        🔥 Signature Arc: Mugen Train<br>
+        🎵 Soundtrack: Ethereal and intense<br>
+        🎨 Visuals: Water-style swordplay meets ukiyo-e elegance
       </div>
     </div>
 
-    <div class="anime-card" onclick="showAlert('One Piece')">
+    <!-- One Piece -->
+    <div class="anime-card" onclick="showAlert(event, 'One Piece')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/One_Piece_Anime_Visual.png" alt="One Piece" class="anime-img">
       <div class="anime-title">One Piece</div>
       <div class="anime-description">
-        Luffy sails the Grand Line with his crew in search of the legendary treasure.
+        Luffy sails the Grand Line with his crew in search of the legendary treasure. With over 1000 episodes, it’s a living myth of freedom, friendship, and wild adventure.
+        <br><br>
+        🏴‍☠️ Signature Arc: Marineford War<br>
+        🌊 Themes: Dreams, loyalty, rebellion<br>
+        🎨 Visuals: Vibrant, chaotic, endlessly creative
       </div>
     </div>
   </div>
 
-  <footer>Made with ❤️ for anime lovers by Avaneesh</footer>
+  <footer>Made with ❤️ by Avaneesh — remixing anime, code, and culture</footer>
 
   <script>
-    function showAlert(animeName) {
+    // Entrance animation
+    anime({
+      targets: '.anime-card',
+      opacity: [0, 1],
+      scale: [0.8, 1],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: 'easeOutElastic(1, .6)'
+    });
+
+    // Ripple click effect
+    function showAlert(e, animeName) {
+      const card = e.currentTarget;
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+      card.appendChild(ripple);
+
+      const size = Math.max(card.offsetWidth, card.offsetHeight);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = e.offsetX - size / 2 + 'px';
+      ripple.style.top = e.offsetY - size / 2 + 'px';
+
+      anime({
+        targets: ripple,
+        scale: [0, 2],
+        opacity: [0.6, 0],
+        duration: 600,
+        easing: 'easeOutQuad',
+        complete: () => ripple.remove()
+      });
+
       alert(`You clicked on ${animeName}! Ready to dive deeper into the world of ${animeName}?`);
     }
 
-    // GSAP entrance animation
-    gsap.to(".anime-card", {
-      duration: 1,
-      opacity: 1,
-      y: -20,
-      stagger: 0.2,
-      ease: "bounce.out"
-    });
-
-    // GSAP hover effect
-    document.querySelectorAll(".anime-card").forEach(card => {
-      card.addEventListener("mouseenter", () => {
-        gsap.to(card, { scale: 1.05, boxShadow: "0 0 25px rgba(0,255,255,0.7)", duration: 0.3 });
-      });
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card, { scale: 1, boxShadow: "0 0 15px rgba(255,0,85,0.5)", duration: 0.3 });
-      });
-    });
+    // Music toggle
+    function toggleMusic() {
+      const music = document.getElementById('bg-music');
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
   </script>
-</body>
-</html>
+</
