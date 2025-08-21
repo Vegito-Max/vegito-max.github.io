@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anime Showcase</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: #ff0055;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px #000;
+    }
+
+    .anime-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .anime-card {
+      background: #1e1e2f;
+      border-radius: 12px;
+      width: 300px;
+      padding: 1.5rem;
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    .anime-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #ffcc00;
+      text-shadow: 1px 1px #000;
+    }
+
+    .anime-description {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #111;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .highlight {
+      color: #00ffff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>🔥 Ultimate Anime Showcase 🔥</header>
+
+  <div class="anime-container">
+    <div class="anime-card" onclick="showAlert('Dragon Ball Super')">
+      <div class="anime-title">Dragon Ball Super</div>
+      <div class="anime-description">
+        Goku reaches new heights with <span class="highlight">Ultra Instinct</span> as gods and mortals clash in epic battles.
+      </div>
+    </div>
+
+    <div class="anime-card" onclick="showAlert('Naruto Shippuden')">
+      <div class="anime-title">Naruto Shippuden</div>
+      <div class="anime-description">
+        Naruto fights to protect his village and fulfill his dream of becoming Hokage.
+      </div>
+    </div>
+
+    <div class="anime-card" onclick="showAlert('Demon Slayer')">
+      <div class="anime-title">Demon Slayer</div>
+      <div class="anime-description">
+        Tanjiro wields his blade against demons in a beautifully animated journey of vengeance and hope.
+      </div>
+    </div>
+
+    <div class="anime-card" onclick="showAlert('One Piece')">
+      <div class="anime-title">One Piece</div>
+      <div class="anime-description">
+        Luffy sails the Grand Line with his crew in search of the legendary treasure.
+      </div>
+    </div>
+  </div>
+
+  <footer>Made with ❤️ for anime lovers by Avaneesh</footer>
+
+  <script>
+    function showAlert(animeName) {
+      alert(`You clicked on ${animeName}! Ready to dive deeper into the world of ${animeName}?`);
+    }
+
+    // GSAP entrance animation
+    gsap.to(".anime-card", {
+      duration: 1,
+      opacity: 1,
+      y: -20,
+      stagger: 0.2,
+      ease: "bounce.out"
+    });
+
+    // GSAP hover effect
+    document.querySelectorAll(".anime-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        gsap.to(card, { scale: 1.05, boxShadow: "0 0 25px rgba(0,255,255,0.7)", duration: 0.3 });
+      });
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, { scale: 1, boxShadow: "0 0 15px rgba(255,0,85,0.5)", duration: 0.3 });
+      });
+    });
+  </script>
+</body>
+</html>
