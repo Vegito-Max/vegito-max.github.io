@@ -8,6 +8,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Anime.js CDN for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anime.js/3.2.1/anime.min.js"></script>
+    <!-- Anime.js animation script -->
+    <script>
+        // Hero section title animation using anime.js
+        anime.timeline({loop: false})
+            .add({
+                targets: '#name-animation',
+                scale: [0.3, 1],
+                opacity: [0, 1],
+                translateY: [-50, 0],
+                easing: 'easeOutElastic(1, .8)',
+                duration: 1200
+            });
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -52,7 +67,7 @@
             </div>
             <div class="md:w-1/2">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
-                    Hello, I'm <span class="text-gradient">Vegito-Max</span>
+                    Hello, I'm <span class="text-gradient" id="name-animation">Vegito-Max</span>
                 </h1>
                 <p class="text-lg sm:text-xl text-gray-400 mb-6">
                     A passionate software developer specializing in creating seamless web experiences.
@@ -62,7 +77,7 @@
                     <a href="https://github.com/vegito-max" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">
                         <i class="fab fa-github"></i>
                     </a>
-                   
+                    
                 </div>
             </div>
         </section>
@@ -89,46 +104,10 @@
                     <!-- Placeholder image updated to match color scheme -->
                     <img src="https://placehold.co/600x400/F97316/FFFFFF?text=Project+1" alt="Project 1" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-2xl font-semibold text-white mb-2">Portfolio Website</h3>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Lemons and Meteors 🎮🌠</h3>
                         <p class="text-gray-400 text-sm mb-4">A sleek, modern portfolio website built with HTML, Tailwind CSS, and some JavaScript for a smooth user experience.</p>
                         <div class="flex space-x-4">
-                            <a href="#" class="text-gradient hover:text-white transition-colors duration-300">
-                                <i class="fas fa-link mr-2"></i>Live Demo
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-                                <i class="fab fa-github mr-2"></i>Source Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Card 2 -->
-                <div class="project-card bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
-                    <!-- Placeholder image updated to match color scheme -->
-                    <img src="https://placehold.co/600x400/FBBF24/FFFFFF?text=Project+2" alt="Project 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold text-white mb-2">E-commerce App</h3>
-                        <p class="text-gray-400 text-sm mb-4">A responsive e-commerce application featuring a product catalog, shopping cart, and a checkout process.</p>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gradient hover:text-white transition-colors duration-300">
-                                <i class="fas fa-link mr-2"></i>Live Demo
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-                                <i class="fab fa-github mr-2"></i>Source Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Card 3 -->
-                <div class="project-card bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
-                    <!-- Placeholder image updated to match color scheme -->
-                    <img src="https://placehold.co/600x400/B91C1C/FFFFFF?text=Project+3" alt="Project 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold text-white mb-2">Social Media Dashboard</h3>
-                        <p class="text-gray-400 text-sm mb-4">A data visualization dashboard to track social media metrics and user engagement in real-time.</p>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gradient hover:text-white transition-colors duration-300">
+                            <a href="https://vegito-max.itch.io/lemonoid-invasion" class="text-gradient hover:text-white transition-colors duration-300">
                                 <i class="fas fa-link mr-2"></i>Live Demo
                             </a>
                             <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
@@ -188,99 +167,100 @@
     </footer>
 
     <script>
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatBox = document.getElementById('chat-box');
-        
-        async function getGeminiResponse(userPrompt, context) {
-            const systemPrompt = "You are a friendly and helpful AI assistant for the 'Vegito-Max' portfolio website. Your purpose is to answer questions about the portfolio owner and the projects listed on the page. Use the provided context from the website to inform your answers. If a question is outside the scope of the provided information, kindly state that you cannot answer it.";
+        window.onload = function() {
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const chatBox = document.getElementById('chat-box');
             
-            const userQuery = `Context from the portfolio page:\n---\n${context}\n---\nUser's question: ${userPrompt}`;
+            async function getGeminiResponse(userPrompt, context) {
+                const systemPrompt = "You are a friendly and helpful AI assistant for the 'Vegito-Max' portfolio website. Your purpose is to answer questions about the portfolio owner and the projects listed on the page. Use the provided context from the website to inform your answers. If a question is outside the scope of the provided information, kindly state that you cannot answer it.";
+                
+                const userQuery = `Context from the portfolio page:\n---\n${context}\n---\nUser's question: ${userPrompt}`;
 
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    tools: [{ "google_search": {} }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                } else {
+                    return "I'm sorry, I couldn't process that request. Please try again.";
                 }
-            };
+            }
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+            function appendMessage(sender, text) {
+                const messageElement = document.createElement('div');
+                messageElement.className = `flex items-start mb-4 ${sender === 'user' ? 'justify-end' : ''}`;
+                
+                const avatar = document.createElement('div');
+                // Updated to red for consistency
+                avatar.className = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold ${sender === 'user' ? 'bg-red-600 text-white order-2 ml-4' : 'bg-gray-700 text-white'}`;
+                avatar.textContent = sender === 'user' ? 'You' : 'AI';
+
+                const textContainer = document.createElement('div');
+                // Updated to red for consistency
+                textContainer.className = `p-3 rounded-lg max-w-sm ${sender === 'user' ? 'bg-red-500 text-white order-1' : 'bg-gray-700 text-gray-300'}`;
+                textContainer.textContent = text;
+
+                messageElement.appendChild(avatar);
+                messageElement.appendChild(textContainer);
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            async function handleSendMessage() {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                appendMessage('user', userMessage);
+                chatInput.value = '';
+
+                // Loading indicator
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.textContent = 'AI is typing...';
+                loadingIndicator.className = 'text-gray-500 italic text-sm mb-4';
+                chatBox.appendChild(loadingIndicator);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Get context from the page
+                const aboutContent = document.getElementById('about').innerText;
+                const projectsContent = document.getElementById('projects').innerText;
+                const context = `${aboutContent}\n\n${projectsContent}`;
+
+                try {
+                    const aiResponse = await getGeminiResponse(userMessage, context);
+                    loadingIndicator.remove(); // Remove loading indicator
+                    appendMessage('ai', aiResponse);
+                } catch (error) {
+                    console.error("Error fetching Gemini response:", error);
+                    loadingIndicator.remove(); // Remove loading indicator on error
+                    appendMessage('ai', "I'm sorry, an error occurred. Please try again.");
+                }
+            }
+
+            sendBtn.addEventListener('click', handleSendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSendMessage();
+                }
             });
-
-            const result = await response.json();
-            const candidate = result.candidates?.[0];
-
-            if (candidate && candidate.content?.parts?.[0]?.text) {
-                return candidate.content.parts[0].text;
-            } else {
-                return "I'm sorry, I couldn't process that request. Please try again.";
-            }
-        }
-
-        function appendMessage(sender, text) {
-            const messageElement = document.createElement('div');
-            messageElement.className = `flex items-start mb-4 ${sender === 'user' ? 'justify-end' : ''}`;
-            
-            const avatar = document.createElement('div');
-            // Updated to red for consistency
-            avatar.className = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold ${sender === 'user' ? 'bg-red-600 text-white order-2 ml-4' : 'bg-gray-700 text-white'}`;
-            avatar.textContent = sender === 'user' ? 'You' : 'AI';
-
-            const textContainer = document.createElement('div');
-            // Updated to red for consistency
-            textContainer.className = `p-3 rounded-lg max-w-sm ${sender === 'user' ? 'bg-red-500 text-white order-1' : 'bg-gray-700 text-gray-300'}`;
-            textContainer.textContent = text;
-
-            messageElement.appendChild(avatar);
-            messageElement.appendChild(textContainer);
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        async function handleSendMessage() {
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
-
-            appendMessage('user', userMessage);
-            chatInput.value = '';
-
-            // Loading indicator
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.textContent = 'AI is typing...';
-            loadingIndicator.className = 'text-gray-500 italic text-sm mb-4';
-            chatBox.appendChild(loadingIndicator);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Get context from the page
-            const aboutContent = document.getElementById('about').innerText;
-            const projectsContent = document.getElementById('projects').innerText;
-            const context = `${aboutContent}\n\n${projectsContent}`;
-
-            try {
-                const aiResponse = await getGeminiResponse(userMessage, context);
-                loadingIndicator.remove(); // Remove loading indicator
-                appendMessage('ai', aiResponse);
-            } catch (error) {
-                console.error("Error fetching Gemini response:", error);
-                loadingIndicator.remove(); // Remove loading indicator on error
-                appendMessage('ai', "I'm sorry, an error occurred. Please try again.");
-            }
-        }
-
-        sendBtn.addEventListener('click', handleSendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
+        };
     </script>
 </body>
 </html>
-
