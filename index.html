@@ -51,7 +51,6 @@
             <nav class="hidden md:flex space-x-6">
                 <a href="#about" class="hover:text-white transition-colors duration-300">About</a>
                 <a href="#projects" class="hover:text-white transition-colors duration-300">Projects</a>
-                <a href="#chat" class="hover:text-white transition-colors duration-300">Chat</a>
                 <a href="#contact" class="hover:text-white transition-colors duration-300">Contact</a>
             </nav>
         </div>
@@ -128,27 +127,7 @@
                 </div>
             </div>
         </section>
-
-        <!-- Chat Section -->
-        <section id="chat" class="py-16">
-            <h2 class="text-4xl font-bold text-center text-white mb-12">Chat with the Creator ✨</h2>
-            <div class="max-w-3xl mx-auto">
-                <div id="chat-box" class="bg-gray-800 rounded-lg shadow-lg p-6 h-96 overflow-y-auto mb-4 border border-gray-700">
-                    <!-- Chat messages will be appended here -->
-                    <div class="flex items-start mb-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-white font-bold">AI</div>
-                        <div class="ml-4 bg-gray-700 p-3 rounded-lg max-w-sm">
-                            <p class="text-sm">Hello there! I'm an AI assistant for Vegito-Max's portfolio. Ask me anything about their projects or skills!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex">
-                    <input type="text" id="chat-input" class="flex-grow p-3 rounded-l-lg bg-gray-800 text-gray-300 placeholder-gray-500 border border-gray-700 focus:outline-none focus:border-red-500" placeholder="Ask me a question...">
-                    <button id="send-btn" class="bg-red-600 text-white p-3 rounded-r-lg font-semibold hover:bg-red-700 transition-colors duration-300">Send</button>
-                </div>
-            </div>
-        </section>
-
+        
         <!-- Contact Section -->
         <section id="contact" class="py-16 text-center">
             <h2 class="text-4xl font-bold text-white mb-4">Get in Touch</h2>
@@ -175,110 +154,5 @@
     <footer class="bg-gray-900 text-center py-6">
         <p class="text-sm text-gray-500">&copy; 2024 Vegito-Max. All Rights Reserved.</p>
     </footer>
-
-    <script>
-        window.onload = function() {
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-            const chatBox = document.getElementById('chat-box');
-
-            async function getGeminiResponse(userPrompt, context) {
-                // Using a proper system instruction and parts structure
-                const systemInstruction = {
-                    parts: [{
-                        text: "You are a friendly and helpful AI assistant for the 'Vegito-Max' portfolio website. Your purpose is to answer questions about the portfolio owner and the projects listed on the page. Use the provided context from the website to inform your answers. If a question is outside the scope of the provided information, kindly state that you cannot answer it."
-                    }]
-                };
-
-                // Concatenate the context with the user's prompt
-                const userMessageWithContext = `Context from the portfolio page:\n---\n${context}\n---\nUser's question: ${userPrompt}`;
-
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                const payload = {
-                    systemInstruction: systemInstruction,
-                    contents: [{
-                        role: "user",
-                        parts: [{
-                            text: userMessageWithContext
-                        }]
-                    }]
-                };
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
-
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    return candidate.content.parts[0].text;
-                } else {
-                    return "I'm sorry, I couldn't process that request. Please try again.";
-                }
-            }
-
-            function appendMessage(sender, text) {
-                const messageElement = document.createElement('div');
-                messageElement.className = `flex items-start mb-4 ${sender === 'user' ? 'justify-end' : ''}`;
-                
-                const avatar = document.createElement('div');
-                // Updated to red for consistency
-                avatar.className = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold ${sender === 'user' ? 'bg-red-600 text-white order-2 ml-4' : 'bg-gray-700 text-white'}`;
-                avatar.textContent = sender === 'user' ? 'You' : 'AI';
-
-                const textContainer = document.createElement('div');
-                // Updated to red for consistency
-                textContainer.className = `p-3 rounded-lg max-w-sm ${sender === 'user' ? 'bg-red-500 text-white order-1' : 'bg-gray-700 text-gray-300'}`;
-                textContainer.textContent = text;
-
-                messageElement.appendChild(avatar);
-                messageElement.appendChild(textContainer);
-                chatBox.appendChild(messageElement);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-
-            async function handleSendMessage() {
-                const userMessage = chatInput.value.trim();
-                if (!userMessage) return;
-
-                appendMessage('user', userMessage);
-                chatInput.value = '';
-
-                // Loading indicator
-                const loadingIndicator = document.createElement('div');
-                loadingIndicator.textContent = 'AI is typing...';
-                loadingIndicator.className = 'text-gray-500 italic text-sm mb-4';
-                chatBox.appendChild(loadingIndicator);
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                // Get context from the page
-                const aboutContent = document.getElementById('about').innerText;
-                const projectsContent = document.getElementById('projects').innerText;
-                const context = `${aboutContent}\n\n${projectsContent}`;
-
-                try {
-                    const aiResponse = await getGeminiResponse(userMessage, context);
-                    loadingIndicator.remove(); // Remove loading indicator
-                    appendMessage('ai', aiResponse);
-                } catch (error) {
-                    console.error("Error fetching Gemini response:", error);
-                    loadingIndicator.remove(); // Remove loading indicator on error
-                    appendMessage('ai', "I'm sorry, an error occurred. Please try again.");
-                }
-            }
-
-            sendBtn.addEventListener('click', handleSendMessage);
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    handleSendMessage();
-                }
-            });
-        };
-    </script>
 </body>
 </html>
