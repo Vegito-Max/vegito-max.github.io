@@ -18,7 +18,6 @@
             font-family: 'Inter', sans-serif;
         }
         .text-gradient {
-            /* Updated to a red-orange-yellow gradient */
             background-image: linear-gradient(to right, #ff4d4d 0%, #ffc107 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -178,6 +177,53 @@
         <p class="text-sm text-gray-500">&copy; 2024 Vegito-Max. All Rights Reserved.</p>
     </footer>
 
+    <!-- Chatbot Button -->
+    <button id="chatbot-button" class="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300 transform hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2.003 5.884L10 9.882l-8.003 3.998A2 2 0 012 12.116V5.884zM14 15V5a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+    </button>
+    
+    <!-- Chatbot Container -->
+    <div id="chatbot-container" class="fixed bottom-20 right-6 z-50 w-full max-w-sm sm:max-w-md md:max-w-lg bg-gray-800 rounded-2xl shadow-2xl flex flex-col h-[70vh] transition-all duration-500 ease-in-out transform scale-0 origin-bottom-right">
+        <!-- Chat Header -->
+        <div class="bg-gray-700 p-4 rounded-t-2xl flex items-center justify-between shadow-md">
+            <h1 class="text-lg font-bold text-gray-100">AI Assistant</h1>
+            <span class="text-xs text-green-400 px-2 py-1 rounded-full bg-green-900">Online</span>
+            <button id="close-chatbot" class="text-gray-400 hover:text-white transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Chat Messages Display Area -->
+        <div id="chat-history" class="flex-1 p-6 overflow-y-auto space-y-4">
+            <!-- Messages will be injected here by JavaScript -->
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chat-form" class="bg-gray-700 p-4 rounded-b-2xl flex items-center gap-2">
+            <input 
+                id="chat-input" 
+                type="text" 
+                placeholder="Ask me a question..." 
+                class="flex-1 px-4 py-2 rounded-full bg-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+            />
+            <button 
+                type="submit" 
+                id="send-button"
+                class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 00.183.18L1 17.5a1 1 0 001.414 1.414l5-5V17a1 1 0 001 1h2a1 1 0 001-1v-4.586l5 5a1 1 0 001.414-1.414L10.894 2.553z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <div id="loading-indicator" class="hidden text-gray-400">Thinking...</div>
+        </form>
+    </div>
+
     <!-- Anime.js animation script for text -->
     <script>
         // Hero section title animation using anime.js
@@ -252,6 +298,92 @@
 
             animate();
         };
+    </script>
+
+    <!-- Chatbot Script -->
+    <script>
+        const chatbotButton = document.getElementById('chatbot-button');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const closeChatbotButton = document.getElementById('close-chatbot');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatHistory = document.getElementById('chat-history');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        // Toggle chatbot visibility
+        chatbotButton.addEventListener('click', () => {
+            chatbotContainer.classList.toggle('scale-0');
+            chatbotContainer.classList.toggle('scale-100');
+        });
+
+        closeChatbotButton.addEventListener('click', () => {
+            chatbotContainer.classList.add('scale-0');
+            chatbotContainer.classList.remove('scale-100');
+        });
+
+        // Initial chat history
+        const chatMessages = [
+            { role: 'model', content: "Hello! I'm Vegito-Max's AI assistant. Ask me anything about his portfolio or projects!" }
+        ];
+
+        // Render messages to the UI
+        function renderMessages() {
+            chatHistory.innerHTML = '';
+            chatMessages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `p-3 rounded-xl max-w-[80%] break-words shadow-md ${
+                    message.role === 'user' ? 'bg-blue-600 self-end text-white ml-auto' : 'bg-gray-700 self-start text-gray-200'
+                }`;
+                messageElement.textContent = message.content;
+                chatHistory.appendChild(messageElement);
+            });
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Handle the form submission
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const userMessage = chatInput.value.trim();
+            if (!userMessage) return;
+
+            chatMessages.push({ role: 'user', content: userMessage });
+            chatInput.value = '';
+            renderMessages();
+            
+            loadingIndicator.classList.remove('hidden');
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: chatMessages.map(msg => ({ text: msg.content })) }],
+                systemInstruction: {
+                    parts: [{ text: "You are a helpful and friendly assistant named Vegito-Max's AI Assistant. Your goal is to provide concise and accurate information based on the portfolio content. You can answer questions about the projects, the 'About Me' section, or contact information. You are a 13-year-old boy's AI assistant." }]
+                },
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                const botMessage = result.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response. Please try again.";
+                chatMessages.push({ role: 'model', content: botMessage });
+                
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                chatMessages.push({ role: 'model', content: "There was an error connecting to the AI. Please try again later." });
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                renderMessages();
+            }
+        });
+
+        renderMessages();
     </script>
 
 </body>
