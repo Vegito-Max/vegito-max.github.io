@@ -113,6 +113,19 @@
                         </div>
                     </div>
                 </div>
+                <!-- NEW Project Card 2 -->
+                <div class="project-card bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 cursor-pointer" onclick="window.open('https://vegito-max.itch.io/super-mario-bros-3', '_blank')">
+                    <img src="https://placehold.co/600x400/0891b2/FFFFFF?text=Super+Mario+Bros.+3+🍄🌟" alt="Super Mario Bros. 3 🍄🌟" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-2">Super Mario Bros. 3 🍄🌟</h3>
+                        <p class="text-gray-400 text-sm mb-4">A classic fan remake, recreating the iconic retro gaming experience with modern web technologies.</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                                <i class="fab fa-github mr-2"></i>Source Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -168,23 +181,31 @@
             const chatInput = document.getElementById('chat-input');
             const sendBtn = document.getElementById('send-btn');
             const chatBox = document.getElementById('chat-box');
-            
+
             async function getGeminiResponse(userPrompt, context) {
-                const systemPrompt = "You are a friendly and helpful AI assistant for the 'Vegito-Max' portfolio website. Your purpose is to answer questions about the portfolio owner and the projects listed on the page. Use the provided context from the website to inform your answers. If a question is outside the scope of the provided information, kindly state that you cannot answer it.";
-                
-                const userQuery = `Context from the portfolio page:\n---\n${context}\n---\nUser's question: ${userPrompt}`;
+                // Using a proper system instruction and parts structure
+                const systemInstruction = {
+                    parts: [{
+                        text: "You are a friendly and helpful AI assistant for the 'Vegito-Max' portfolio website. Your purpose is to answer questions about the portfolio owner and the projects listed on the page. Use the provided context from the website to inform your answers. If a question is outside the scope of the provided information, kindly state that you cannot answer it."
+                    }]
+                };
+
+                // Concatenate the context with the user's prompt
+                const userMessageWithContext = `Context from the portfolio page:\n---\n${context}\n---\nUser's question: ${userPrompt}`;
 
                 const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
                 const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    tools: [{ "google_search": {} }],
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    }
+                    systemInstruction: systemInstruction,
+                    contents: [{
+                        role: "user",
+                        parts: [{
+                            text: userMessageWithContext
+                        }]
+                    }]
                 };
-
+                
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -261,5 +282,3 @@
     </script>
 </body>
 </html>
-
-
