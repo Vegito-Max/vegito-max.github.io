@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegito-Max | Simple Site</title>
+    <title>Vegito-Max | Chat App</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Anime.js CDN for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anime.js/3.2.1/anime.min.js"></script>
-    <!-- Google Font for Facts Section -->
+    <!-- Google Font for Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-  
+    
     <!-- Anime.js animation script -->
     <script>
         // Hero section title animation using anime.js
@@ -28,6 +28,7 @@
                 duration: 1200
             });
     </script>
+    <!-- Custom CSS for gradients and fonts -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -38,107 +39,57 @@
             -webkit-text-fill-color: transparent;
         }
     </style>
-      <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            flex-direction: column;
-        }
-
-        #chat-container {
-            width: 80%;
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #messages {
-            height: 300px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        .message {
-            padding: 5px;
-            margin: 5px 0;
-            border-radius: 4px;
-            background: #2c7aef;
-            color: white;
-        }
-
-        .user-message {
-            text-align: right;
-            background: #f9f9f9;
-            color: black;
-        }
-
-        .user-message .message {
-            background: #e0f7fa;
-        }
-
-        #chat-input {
-            display: flex;
-        }
-
-        #chat-input input {
-            flex-grow: 1;
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        #chat-input button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #chat-input button:hover {
-            background: #0056b3;
-        }
-    </style>
-  <script src="https://js.puter.com/v2/"></script>
+    <script src="https://js.puter.com/v2/"></script>
 </head>
-<body class="bg-gray-950 text-gray-300 min-h-screen flex flex-col">
+<body class="bg-gray-950 text-gray-300 min-h-screen flex flex-col font-sans antialiased">
 
     <!-- Header Section -->
     <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-sm shadow-md py-4 px-8">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-gradient">Vegito-Max</a>
+        <div class="container mx-auto flex justify-start items-center">
+            <a href="#" class="text-3xl font-bold tracking-tighter text-gradient transition-transform transform hover:scale-105">Vegito-Max</a>
         </div>
     </header>
-  <div id="chat-container">
-        <div id="messages"></div>
-        <div id="chat-input">
-            <input type="text" id="input-message" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <!-- Chatbot Container -->
+        <div id="chat-container" class="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-xl flex flex-col p-6 space-y-4 transition-all duration-300">
+            <!-- Messages Display Area -->
+            <div id="messages" class="h-96 overflow-y-auto p-4 rounded-xl bg-gray-900 border border-gray-700 flex flex-col space-y-2">
+                <!-- Messages will be appended here by the JS -->
+            </div>
+            
+            <!-- Chat Input Section -->
+            <div id="chat-input" class="flex space-x-2">
+                <input type="text" id="input-message" placeholder="Type a message..." class="flex-grow p-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                <button onclick="sendMessage()" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105">
+                    Send
+                </button>
+            </div>
         </div>
-    </div>
-     <script>
+    </main>
+    
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-center py-6 border-t border-gray-800">
+        <p class="text-sm text-gray-500">&copy; 2025 Vegito-Max. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Javascript for Chatbot Functionality -->
+    <script>
         const messages = [];
+
         function addMessage(msg, isUser) {
             const messagesDiv = document.getElementById("messages");
             const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message");
+            
+            // Add Tailwind classes based on sender
+            let messageClasses = 'p-3 rounded-xl max-w-[80%] break-words';
             if (isUser) {
-                messageDiv.classList.add("user-message");
+                messageClasses += ' bg-blue-600 text-white self-end text-right';
+            } else {
+                messageClasses += ' bg-gray-700 text-gray-200 self-start text-left';
             }
+            
+            messageDiv.className = messageClasses;
             messageDiv.textContent = msg;
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -150,10 +101,10 @@
             if (message) {
                 addMessage(message, true);
                 input.value = '';
-                // Record the message in array of messages
+                // Record the message in array of messages 
                 messages.push({ content: message, role: 'user' });
-                // Call the AI chat function
-                puter.ai.chat(messages).then(response => {
+                // Call the AI chat function 
+                puter.ai.chat(messages, { model: "gpt-5-nano" }).then(response => {
                     addMessage(response, false);
                     messages.push(response.message);
                 }).catch(error => {
@@ -162,14 +113,5 @@
             }
         }
     </script>
-
-    <main class="flex-grow flex items-center justify-center">
-        <!-- Empty section for now -->
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-center py-6">
-        <p class="text-sm text-gray-500">&copy; 2024 Vegito-Max. All Rights Reserved.</p>
-    </footer>
 </body>
 </html>
