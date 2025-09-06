@@ -1,36 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vegito-Max | Portfolio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for 'Inter' and 'Space Mono' -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Anime.js CDN for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anime.js/3.2.1/anime.min.js"></script>
-    <!-- Three.js CDN for 3D animated background -->
+    <!-- Vanta.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.halo.min.js"></script>
+    
     <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #ff4d4d;
+            --bg-color: #0d0d12;
+            --text-color: #e2e8f0;
+            --card-bg: #1a202c;
+            --border-color: #2d3748;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
         }
+
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ffc107, #ff4d4d);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #ffc107, #ff4d4d);
+        }
+
+        /* Text gradient with a more defined look */
         .text-gradient {
-            background-image: linear-gradient(to right, #ff4d4d 0%, #ffc107 100%);
+            background-image: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .project-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        /* Pulsing glow effect for buttons and cards */
+        .glow-on-hover {
+            position: relative;
+            z-index: 0;
         }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        .glow-on-hover::before {
+            content: '';
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color), var(--secondary-color));
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 12px;
         }
+        .glow-on-hover:hover::before {
+            opacity: 1;
+            animation: glowing 8s linear infinite;
+        }
+        
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Project card styles with a more subtle hover effect */
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
         /* CSS for the animated background */
-        #bg-canvas {
+        #vanta-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -39,38 +103,35 @@
             z-index: -2;
             pointer-events: none;
         }
-        /* Overlay to ensure text readability over the animation */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: -1;
+            pointer-events: none;
         }
-        /* Ensure the main content is on top of the background */
         main, header, footer {
             position: relative;
             z-index: 1;
         }
+        
     </style>
 </head>
 <body class="bg-gray-950 text-gray-300">
 
-    <!-- Added background music with autoplay, loop, and controls -->
-    <audio id="background-music" src="/Voltage_Vortex.mp3" autoplay loop controls class="hidden"></audio>
-
-    <!-- Animated background canvas -->
-    <canvas id="bg-canvas"></canvas>
+    <!-- Animated background container -->
+    <div id="vanta-bg"></div>
     <!-- Semi-transparent overlay -->
     <div class="overlay"></div>
 
     <!-- Header Section -->
-    <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-sm shadow-md py-4 px-8">
+    <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-md shadow-lg py-4 px-8 border-b border-gray-800">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-gradient">Vegito-Max</a>
-            <nav class="hidden md:flex space-x-6">
+            <a href="#" class="text-2xl font-bold text-gradient">Vegito-Max</a>
+            <nav class="hidden md:flex space-x-6 text-lg">
                 <a href="#about" class="hover:text-white transition-colors duration-300">About</a>
                 <a href="#projects" class="hover:text-white transition-colors duration-300">Projects</a>
                 <a href="#contact" class="hover:text-white transition-colors duration-300">Contact</a>
@@ -84,19 +145,15 @@
 
         <!-- Hero Section -->
         <section id="hero" class="flex flex-col md:flex-row items-center justify-center text-center md:text-left min-h-[calc(100vh-64px)] -mt-16">
-            <div class="md:w-1/2 md:pr-12">
-                <!-- Profile image updated with new sizing and aspect ratio -->
-                <img src="/5f569f52ab7b5b4f59c506db0b478fcd.jpg" alt="Vegito-Max Profile" class="rounded-xl mx-auto md:mx-0 w-72 h-96 object-cover object-top mb-8 md:mb-0 border-4 border-white transform hover:scale-105 transition-transform duration-300">
+            <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0">
+                <img src="https://placehold.co/400x400/0F172A/fff?text=Vegito-Max" alt="Vegito-Max Profile" class="rounded-2xl mx-auto md:mx-0 w-64 h-64 object-cover object-top border-4 border-white shadow-xl transform hover:scale-105 transition-transform duration-300">
             </div>
             <div class="md:w-1/2">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
-                    Hello, I'm <span class="text-gradient" id="name-animation">Vegito-Max</span>
+                    Hello, I'm <span class="text-gradient">Vegito-Max</span>
                 </h1>
-                <p class="text-lg sm:text-xl text-gray-400 mb-6">
-                    A passionate 13 year-old boy specializing in creating seamless web experiences.
-                </p>
-                <div class="flex justify-center md:justify-start space-x-6 text-2xl text-gray-400">
-                    <!-- GitHub link updated -->
+                <p class="text-lg sm:text-xl text-gray-400 mb-6">A passionate 13 year-old boy specializing in creating seamless web experiences.</p>
+                <div class="flex justify-center md:justify-start space-x-6 text-3xl text-gray-400">
                     <a href="https://github.com/vegito-max" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">
                         <i class="fab fa-github"></i>
                     </a>
@@ -122,12 +179,11 @@
             <h2 class="text-4xl font-bold text-center text-white mb-12">My Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project Card 1 -->
-                <div class="project-card bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 cursor-pointer" onclick="window.open('https://vegito-max.itch.io/lemonoid-invasion', '_blank')">
-                    <!-- Placeholder image updated to match color scheme -->
-                    <img src="https://placehold.co/600x400/F97316/FFFFFF?text=Lemons+and+Meteors+🎮🌠" alt="Lemons and Meteors 🎮🌠" class="w-full h-48 object-cover">
+                <div class="project-card bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700 hover:border-transparent cursor-pointer glow-on-hover" onclick="window.open('https://vegito-max.itch.io/lemonoid-invasion', '_blank')">
+                    <img src="https://placehold.co/600x400/F97316/FFFFFF?text=Lemons+and+Meteors+🎮🌠" alt="Lemons and Meteors" class="w-full h-48 object-cover project-image transition-transform duration-300">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold text-white mb-2">Lemons and Meteors 🎮🌠</h3>
-                        <p class="text-gray-400 text-sm mb-4">A sleek, modern portfolio website built with HTML, Tailwind CSS, and some JavaScript for a smooth user experience.</p>
+                        <p class="text-gray-400 text-sm mb-4">You'll Find Meteors in shape of Lemons 🍋. Woah ! Lemons . Seriously. It's True and have FUN!!!</p>
                         <div class="flex space-x-4">
                             <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
                                 <i class="fab fa-github mr-2"></i>Source Code
@@ -136,8 +192,8 @@
                     </div>
                 </div>
                 <!-- NEW Project Card 2 -->
-                <div class="project-card bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 cursor-pointer" onclick="window.open('https://vegito-max.itch.io/super-mario-bros-3', '_blank')">
-                    <img src="https://placehold.co/600x400/0891b2/FFFFFF?text=Super+Mario+Bros.+3+🍄🌟" alt="Super Mario Bros. 3 🍄🌟" class="w-full h-48 object-cover">
+                <div class="project-card bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700 hover:border-transparent cursor-pointer glow-on-hover" onclick="window.open('https://vegito-max.itch.io/super-mario-bros-3', '_blank')">
+                    <img src="https://placehold.co/600x400/0891b2/FFFFFF?text=Super+Mario+Bros.+3+🍄🌟" alt="Super Mario Bros. 3" class="w-full h-48 object-cover project-image transition-transform duration-300">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold text-white mb-2">Super Mario Bros. 3 🍄🌟</h3>
                         <p class="text-gray-400 text-sm mb-4">A classic fan remake, recreating the iconic retro gaming experience with modern web technologies.</p>
@@ -158,11 +214,9 @@
                 I am currently open to new opportunities. Feel free to reach out to me via any of the links below.
             </p>
             <div class="flex justify-center space-x-8 text-3xl text-gray-400">
-                <!-- Email link updated -->
                 <a href="mailto:super.ultra.vegito.777@gmail.com" class="hover:text-white transition-colors duration-300">
                     <i class="fas fa-envelope"></i>
                 </a>
-                <!-- GitHub link updated -->
                 <a href="https://github.com/vegito-max" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">
                     <i class="fab fa-github"></i>
                 </a>
@@ -174,16 +228,16 @@
     </main>
 
     <!-- Footer Section -->
-    <footer class="bg-gray-900 text-center py-6">
+    <footer class="bg-gray-900 text-center py-6 border-t border-gray-800">
         <p class="text-sm text-gray-500">&copy; 2025 Vegito-Max. All Rights Reserved.</p>
     </footer>
 
-    <!-- Anime.js animation script for text -->
+    <!-- Anime.js animation script for name -->
     <script>
         // Hero section title animation using anime.js
         anime.timeline({loop: false})
             .add({
-                targets: '#name-animation',
+                targets: '.text-gradient',
                 scale: [0.3, 1],
                 opacity: [0, 1],
                 translateY: [-50, 0],
@@ -192,70 +246,20 @@
             });
     </script>
     
-    <!-- Three.js animation script for background -->
+    <!-- Vanta.js initialization script -->
     <script>
         window.onload = function() {
-            // Scene setup
-            const canvas = document.getElementById('bg-canvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            // Create floating shapes
-            const shapes = [];
-            const shapeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2); // Small cubes
-            const material = new THREE.MeshBasicMaterial({ color: 0xffa500, transparent: true, opacity: 0.8 });
-            
-            for (let i = 0; i < 200; i++) {
-                const shape = new THREE.Mesh(shapeGeometry, material);
-                shape.position.set(
-                    (Math.random() - 0.5) * 50,
-                    (Math.random() - 0.5) * 50,
-                    (Math.random() - 0.5) * 50
-                );
-                shape.velocity = new THREE.Vector3(
-                    (Math.random() - 0.5) * 0.005,
-                    (Math.random() - 0.5) * 0.005,
-                    (Math.random() - 0.5) * 0.005
-                );
-                scene.add(shape);
-                shapes.push(shape);
-            }
-
-            camera.position.z = 5;
-
-            // Animation loop
-            const animate = () => {
-                requestAnimationFrame(animate);
-
-                shapes.forEach(shape => {
-                    shape.position.add(shape.velocity);
-                    shape.rotation.x += 0.01;
-                    shape.rotation.y += 0.01;
-                    
-                    // Boundary checks
-                    if (shape.position.x > 25 || shape.position.x < -25) shape.velocity.x *= -1;
-                    if (shape.position.y > 25 || shape.position.y < -25) shape.velocity.y *= -1;
-                    if (shape.position.z > 25 || shape.position.z < -25) shape.velocity.z *= -1;
-                });
-
-                renderer.render(scene, camera);
-            };
-
-            // Handle window resizing
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
+            VANTA.HALO({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00
             });
-
-            animate();
         };
     </script>
 
 </body>
 </html>
-
-
-
