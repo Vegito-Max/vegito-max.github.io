@@ -15,6 +15,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     
+    <!-- Vanta.js and Three.js for animated background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
+
     <!-- Anime.js animation script -->
     <script>
         // Hero section title animation using anime.js
@@ -73,6 +77,24 @@
         <p class="text-sm text-gray-500">&copy; 2025 Vegito-Max. All Rights Reserved.</p>
     </footer>
 
+    <!-- Vanta.js initialization script -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            VANTA.RINGS({
+                el: "body",
+                color: 0x303030,
+                backgroundColor: 0x0a0a0a,
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+            });
+        });
+    </script>
+    
     <!-- Javascript for Chatbot Functionality -->
     <script>
         const messages = [];
