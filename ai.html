@@ -42,6 +42,26 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* CSS for the new thinking animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .dot-1 {
+            animation: bounce 0.8s infinite 0.1s;
+        }
+        .dot-2 {
+            animation: bounce 0.8s infinite 0.2s;
+        }
+        .dot-3 {
+            animation: bounce 0.8s infinite 0.3s;
+        }
     </style>
     <script src="https://js.puter.com/v2/"></script>
 </head>
@@ -62,6 +82,15 @@
                 <!-- Messages will be appended here by the JS -->
             </div>
             
+            <!-- Thinking animation container -->
+            <div id="thinking-indicator" class="self-start p-3 rounded-xl bg-gray-700 text-gray-200 hidden">
+                <div class="flex space-x-1">
+                    <span class="dot-1 w-2 h-2 bg-gray-400 rounded-full"></span>
+                    <span class="dot-2 w-2 h-2 bg-gray-400 rounded-full"></span>
+                    <span class="dot-3 w-2 h-2 bg-gray-400 rounded-full"></span>
+                </div>
+            </div>
+
             <!-- Chat Input Section -->
             <div id="chat-input" class="flex space-x-2">
                 <textarea id="input-message" placeholder="Type a message..." class="flex-grow p-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none overflow-hidden" rows="1"></textarea>
@@ -130,14 +159,27 @@
                 addMessage(message, true);
                 inputMessage.value = '';
                 inputMessage.style.height = 'auto'; // Reset height
+                
                 // Record the message in array of messages 
                 messages.push({ content: message, role: 'user' });
-                // Call the AI chat function 
+
+                // Show the thinking indicator and add it to the messages div
+                const thinkingIndicator = document.getElementById("thinking-indicator");
+                thinkingIndicator.classList.remove("hidden");
+                const messagesDiv = document.getElementById("messages");
+                messagesDiv.appendChild(thinkingIndicator);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+                // Call the AI chat function
                 puter.ai.chat(messages, { model: "gpt-5-nano" }).then(response => {
+                    // Hide the thinking indicator before adding the new message
+                    thinkingIndicator.classList.add("hidden");
                     addMessage(response, false);
                     messages.push(response.message);
                 }).catch(error => {
                     console.error("AI response error:", error);
+                    // Hide the thinking indicator on error as well
+                    thinkingIndicator.classList.add("hidden");
                 });
             }
         }
