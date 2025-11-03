@@ -19,19 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
 
-    <!-- Anime.js animation script -->
-    <script>
-        // Hero section title animation using anime.js
-        anime.timeline({loop: false})
-            .add({
-                targets: '#name-animation',
-                scale: [0.3, 1],
-                opacity: [0, 1],
-                translateY: [-50, 0],
-                easing: 'easeOutElastic(1, .8)',
-                duration: 1200
-            });
-    </script>
     <!-- Custom CSS for gradients and fonts -->
     <style>
         body {
@@ -75,6 +62,8 @@
 </head>
 <body class="bg-gray-950 text-gray-300 min-h-screen flex flex-col font-sans antialiased">
 
+    <!-- Vanta.js background element is applied to the body -->
+
     <!-- Header Section -->
     <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-sm shadow-md py-4 px-8">
         <div class="container mx-auto flex justify-start items-center">
@@ -113,150 +102,22 @@
     <footer class="bg-gray-900 text-center py-6 border-t border-gray-800">
         <p class="text-sm text-gray-500">&copy; 2025 Vegito-Max. All Rights Reserved.</p>
     </footer>
-
-    <!-- Vanta.js initialization script -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            VANTA.RINGS({
-                el: "body",
-                color: 0x303030,
-                backgroundColor: 0x0a0a0a,
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-            });
-        });
-    </script>
-    
-    <!-- Javascript for Chatbot Functionality (Updated for Gemini API) -->
-    <script>
-        // Store conversation history in the internal format { content: string, role: 'user' | 'model' }
-        const messages = [];
-        const inputMessage = document.getElementById("input-message");
-        const messagesDiv = document.getElementById("messages");
-        const thinkingIndicator = document.getElementById("thinking-indicator");
-        const sendButton = document.querySelector("#chat-input button");
-
-        // Configuration for the Gemini API
-        const apiKey = "<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegito-Max | Chat App</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Anime.js CDN for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anime.js/3.2.1/anime.min.js"></script>
-    <!-- Google Font for Montserrat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    
-    <!-- Vanta.js and Three.js for animated background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
 
     <!-- Anime.js animation script -->
     <script>
         // Hero section title animation using anime.js
-        anime.timeline({loop: false})
-            .add({
-                targets: '#name-animation',
-                scale: [0.3, 1],
-                opacity: [0, 1],
-                translateY: [-50, 0],
-                easing: 'easeOutElastic(1, .8)',
-                duration: 1200
-            });
+        window.addEventListener('DOMContentLoaded', () => {
+            anime.timeline({loop: false})
+                .add({
+                    targets: '#name-animation',
+                    scale: [0.3, 1],
+                    opacity: [0, 1],
+                    translateY: [-50, 0],
+                    easing: 'easeOutElastic(1, .8)',
+                    duration: 1200
+                });
+        });
     </script>
-    <!-- Custom CSS for gradients and fonts -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .text-gradient {
-            background-image: linear-gradient(to right, #ff4d4d 0%, #ffc107 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* CSS for the new thinking animation */
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .dot-1 {
-            animation: bounce 0.8s infinite 0.1s;
-        }
-        .dot-2 {
-            animation: bounce 0.8s infinite 0.2s;
-        }
-        .dot-3 {
-            animation: bounce 0.8s infinite 0.3s;
-        }
-        /* Ensure the main content takes minimum screen height */
-        #vanta-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-    </style>
-</head>
-<body class="bg-gray-950 text-gray-300 min-h-screen flex flex-col font-sans antialiased">
-
-    <!-- Header Section -->
-    <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-sm shadow-md py-4 px-8">
-        <div class="container mx-auto flex justify-start items-center">
-            <a href="#" id="name-animation" class="text-3xl font-bold tracking-tighter text-gradient transition-transform transform hover:scale-105">Vegito-Max</a>
-        </div>
-    </header>
-
-    <main class="flex-grow flex items-center justify-center p-4">
-        <!-- Chatbot Container -->
-        <div id="chat-container" class="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-xl flex flex-col p-6 space-y-4 transition-all duration-300">
-            <!-- Messages Display Area -->
-            <div id="messages" class="h-96 overflow-y-auto p-4 rounded-xl bg-gray-900 border border-gray-700 flex flex-col space-y-2">
-                <!-- Messages will be appended here by the JS -->
-            </div>
-            
-            <!-- Thinking animation container (hidden by default) -->
-            <div id="thinking-indicator" class="self-start p-3 rounded-xl bg-gray-700 text-gray-200 hidden">
-                <div class="flex space-x-1">
-                    <span class="dot-1 w-2 h-2 bg-gray-400 rounded-full"></span>
-                    <span class="dot-2 w-2 h-2 bg-gray-400 rounded-full"></span>
-                    <span class="dot-3 w-2 h-2 bg-gray-400 rounded-full"></span>
-                </div>
-            </div>
-
-            <!-- Chat Input Section -->
-            <div id="chat-input" class="flex space-x-2">
-                <textarea id="input-message" placeholder="Type a message..." class="flex-grow p-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none overflow-hidden" rows="1"></textarea>
-                <button onclick="sendMessage()" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105">
-                    <i class="fas fa-paper-plane"></i> Send
-                </button>
-            </div>
-        </div>
-    </main>
-    
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-center py-6 border-t border-gray-800">
-        <p class="text-sm text-gray-500">&copy; 2025 Vegito-Max. All Rights Reserved.</p>
-    </footer>
 
     <!-- Vanta.js initialization script -->
     <script>
@@ -286,146 +147,8 @@
         const sendButton = document.querySelector("#chat-input button");
 
         // Configuration for the Gemini API
-        const apiKey = "AIzaSyDApEPjAOmc7EcnQc2RWxOTygF6P-HO4xk"; // API key is provided by the environment
-        const modelName = 'gemini-2.5-flash-preview-09-2025';
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-
-        // Utility to dynamically adjust textarea height based on content
-        inputMessage.addEventListener('input', function () {
-            this.style.height = 'auto';
-            this.style.height = this.scrollHeight + 'px';
-        });
-
-        // Function to render a message to the UI
-        function addMessage(msg, isUser) {
-            const messageDiv = document.createElement("div");
-            
-            // Add Tailwind classes based on sender
-            let messageClasses = 'p-3 rounded-xl max-w-[80%] break-words shadow-lg transition-all duration-300';
-            if (isUser) {
-                messageClasses += ' bg-blue-600 text-white self-end text-right transform translate-x-1';
-            } else {
-                messageClasses += ' bg-gray-700 text-gray-200 self-start text-left transform -translate-x-1';
-            }
-            
-            messageDiv.className = messageClasses;
-            messageDiv.textContent = msg;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        // Function to show/hide the thinking indicator
-        function showThinking(show) {
-            if (show) {
-                thinkingIndicator.classList.remove("hidden");
-                // Ensure the indicator is the last child for correct scrolling
-                if (thinkingIndicator.parentNode !== messagesDiv) {
-                    messagesDiv.appendChild(thinkingIndicator);
-                }
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                sendButton.disabled = true;
-                inputMessage.disabled = true;
-            } else {
-                thinkingIndicator.classList.add("hidden");
-                sendButton.disabled = false;
-                inputMessage.disabled = false;
-            }
-        }
-
-        // Main function to send message and call the Gemini API
-        async function sendMessage() {
-            const message = inputMessage.value.trim();
-            if (!message) return;
-
-            // 1. Add user message to UI and history
-            addMessage(message, true);
-            inputMessage.value = '';
-            inputMessage.style.height = 'auto';
-            
-            // Record the message in history. We use 'user' role for the internal array.
-            messages.push({ content: message, role: 'user' });
-
-            // 2. Show thinking indicator
-            showThinking(true);
-
-            // 3. Prepare API payload
-            // Convert internal history format to Gemini API format
-            const chatHistory = messages.map(msg => ({
-                role: msg.role === 'model' ? 'model' : 'user', // Ensure roles are 'user' or 'model'
-                parts: [{ text: msg.content }]
-            }));
-
-            const payload = {
-                contents: chatHistory,
-            };
-
-            // 4. Call API with exponential backoff retry logic
-            const maxRetries = 5;
-            let responseText = "Sorry, I encountered an error communicating with the AI. Please try again or check the console for details.";
-
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        // Throw error to trigger the catch block and retry
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        responseText = candidate.content.parts[0].text;
-                        break; // Success
-                    } else {
-                        // Handle potential API structure errors
-                        throw new Error("Invalid response format from AI.");
-                    }
-
-                } catch (error) {
-                    // Only log error on failed attempts, not final retry
-                    if (i < maxRetries - 1) {
-                         // Exponential backoff delay
-                        const delay = Math.pow(2, i) * 1000 + (Math.random() * 1000); // Add jitter
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    } else {
-                        console.error("AI communication failed after all retries:", error);
-                    }
-                }
-            }
-            
-            // 5. Hide thinking indicator
-            showThinking(false);
-
-            // 6. Add model response to UI and history
-            addMessage(responseText, false);
-            
-            // Only push the model response if it wasn't the default error message
-            if (!responseText.startsWith("Sorry, I encountered an error.")) {
-                 messages.push({ content: responseText, role: 'model' });
-            }
-        }
-
-        // Event listener for the input field to handle Shift+Enter for new lines and Enter to send
-        document.addEventListener('DOMContentLoaded', () => {
-            inputMessage.addEventListener("keydown", function(event) {
-                if (event.key === "Enter" && !event.shiftKey) {
-                    event.preventDefault();
-                    if (!sendButton.disabled) {
-                         sendMessage();
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-"; // API key is provided by the environment
+        // NOTE: The API key is managed by the environment, so we use an empty string placeholder.
+        const apiKey = ""; 
         const modelName = 'gemini-2.5-flash-preview-09-2025';
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
